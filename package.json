@@ -28,6 +28,7 @@
     "webpack-dev-server": "^5.2.0"
   },
   "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
     "postcss": "^8.4.49",
     "stimulus": "^3.2.2"
   }

@@ -9,21 +9,23 @@ module.exports = {
   output: {
     filename: 'bundle.js', 
     path: path.resolve(__dirname, 'dist'), 
-    publicPath: '/',
-    clean: true, 
   },
   stats: {
     children: true, 
   },
+  resolve: {
+    extensions: ['.js', '.jsx', '.json'],
+},
   module: {
     rules: [
       {
-        test: /\.(sass|less|css)$/,  
-        use: [
-          'style-loader',  
-          'css-loader',    
-          'postcss-loader', 
-        ],
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },

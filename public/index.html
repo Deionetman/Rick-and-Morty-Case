@@ -9,6 +9,18 @@
 <body>
   <div id="root"></div>
 
-  <h1 class="text-base text-red-600 bg-pink-500">Hello, World!</h1>
+  <header class="flex justify-center mt-2 mb-2 text-xl">
+    <h1>Rick and Morty Explorer</h1>
+  </header>
+
+  <main data-controller="application">
+    <nav class="flex justify-center gap-3">
+      <button data-action="click->application#showCharacters">Characters</button>
+      <button data-action="click->application#showLocations">Locations</button>
+      <button data-action="click->application#showEpisodes">Episodes</button>
+    </nav>
+
+    <section id="content" data-application-target="content"></section>
+  </main>
 </body>
 </html>

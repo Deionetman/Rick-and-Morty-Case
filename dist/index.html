@@ -5,9 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="dist/output.css">
   <title>Rick & Morty Case Deion Etman</title>
-<script defer src="/bundle.js"></script></head>
+<script defer src="bundle.js"></script></head>
 <body>
   <div id="root"></div>
-  <h1 class="text-red- bg-red-800">Hello, World!</h1>
+
+  <header class="flex justify-center mt-2 mb-2 text-xl">
+    <h1>Rick and Morty Explorer</h1>
+  </header>
+
+  <main data-controller="application">
+    <nav class="flex justify-center gap-3">
+      <button data-action="click->application#showDimensions">Dimensions</button>
+      <button data-action="click->application#showLocations">Locations</button>
+      <button data-action="click->application#showEpisodes">Episodes</button>
+    </nav>
+
+    <section id="content" data-application-target="content"></section>
+  </main>
 </body>
 </html>

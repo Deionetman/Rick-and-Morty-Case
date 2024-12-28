@@ -1,3 +1,9 @@
 import './styles.css';
+import "./controllers/application_controller";
+import { Application } from "@hotwired/stimulus"
+import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
-console.log("hello, test")
+const application = Application.start();
+
+const context = require.context("./controllers", true, /\.js$/);
+application.load(definitionsFromContext(context));
