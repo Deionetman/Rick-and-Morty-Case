@@ -42,7 +42,7 @@ export default class extends Controller {
           </div>
         `
       )
-      .join('');
+      .join('')
   }
 
   renderLocationDetails(location, residents) {
