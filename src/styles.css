@@ -6,3 +6,12 @@
 .card {
     @apply bg-gray-100 p-4 rounded shadow-md;
   }
+
+  #results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 1.5rem; 
+    width: 100%;
+    max-width: 64rem; 
+    padding: 1rem;
+}
