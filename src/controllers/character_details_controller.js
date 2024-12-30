@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import { fetchData } from '../api/apiClient'
 
 export default class extends Controller {
-    static targets = ["content"]
+    static targets = ["content", "input", "results"]
 
     async showCharacterDetails(event) {
         const id = event.target.dataset.id
@@ -13,6 +13,50 @@ export default class extends Controller {
         } catch(err){
             this.showError("Failed to load character details")
         }
+    }
+
+    async search() {
+        const query = this.inputTarget.value.trim();
+    
+        if (!query) {
+            this.resultsTarget.innerHTML = `<p class="text-gray-400">Please enter a name to search for characters.</p>`;
+            return;
+        }
+    
+        try {
+            const response = await fetchData(`/character/?name=${query}`);
+            this.renderResults(response.results);
+        } catch (error) {
+            console.error('Error fetching character data:', error);
+            this.resultsTarget.innerHTML = `<p class="text-red-500">No characters found matching "${query}".</p>`;
+        }
+    }
+
+    renderResults(characters) {
+        if (!characters || characters.length === 0) {
+        this.resultsTarget.innerHTML = `<p class="text-gray-400">No characters found.</p>`;
+        return;
+    }
+    
+        const charactersContent = characters
+        .map(
+            (character) => `
+        <div class="bg-gray-700 p-4 rounded-lg shadow-md">
+            <img src="${character.image}" alt="${character.name}" class="rounded-full w-24 h-24 mx-auto">
+            <h4 class="text-lg font-bold text-gray-200 mt-4">${character.name}</h4>
+            <p class="text-gray-400"><strong>Species:</strong> ${character.species || 'Unknown'}</p>
+            <p class="text-gray-400"><strong>Gender:</strong> ${character.gender || 'Unknown'}</p>
+            <p class="text-gray-400"><strong>Status:</strong> ${character.status || 'Unknown'}</p>
+        </div>
+        `
+        )
+        .join('');
+    
+        this.resultsTarget.innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${charactersContent}
+        </div>
+        `;
     }
 
     async renderCharacterDetails(character) {
@@ -50,7 +94,6 @@ export default class extends Controller {
         `;
     }
     
-
     showError(){
         document.querySelector('#results').innerHTML = `<p class="text-red-500">${message}</p>`
     }
