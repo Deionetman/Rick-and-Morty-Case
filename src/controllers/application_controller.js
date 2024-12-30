@@ -45,7 +45,7 @@ export default class extends Controller {
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6"
                 id="results" data-${controllerName}-target="results"></div>
         </div>
-        ` 
+        `
 
         this.fetchedInitialData(controllerName, endpoint);
     }
@@ -60,15 +60,15 @@ export default class extends Controller {
                     .map((item) => {
                         const action =
                             endpoint.includes("character") ? "showCharacterDetails" :
-                            endpoint.includes("location") ? "showLocationDetails" :
-                            endpoint.includes("episode") ? "showEpisodeDetails" : 
-                            endpoint.includes("dimension") ? "showLocationDetails" : null
+                                endpoint.includes("location") ? "showLocationDetails" :
+                                    endpoint.includes("episode") ? "showEpisodeDetails" :
+                                        endpoint.includes("dimension") ? "showLocationDetails" : null
 
                         return `
                             <div data-controller="${controllerName}" class="result-item bg-gray-700 p-4 rounded-lg shadow-lg">
                                 <h3 class="text-lg font-semibold text-gray-200">${item.name}</h3>
                                 <button 
-                                    class="mt-4 mb-auto px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-all"
+                                    class="mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-all"
                                     data-action="click->${controllerName}#${action}" 
                                     data-id="${item.id}">
                                     View Details
