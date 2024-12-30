@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 import { fetchData } from '../api/apiClient'
 
 export default class extends Controller {
-    static targets = ["content"]
+    static targets = ["content", "input", "results"]
 
     async showEpisodeDetails(event){
         const id = event.target.dataset.id
@@ -17,6 +17,23 @@ export default class extends Controller {
         }
     }
 
+    async search() {
+        const query = this.inputTarget.value.trim();
+    
+        if (!query) {
+            this.resultsTarget.innerHTML = `<p class="text-gray-400">Please enter a name to search for episodes.</p>`;
+            return;
+        }
+    
+        try {
+            const response = await fetchData(`/episode/?name=${query}`);
+            this.renderEpisodeResults(response.results);
+        } catch (error) {
+            console.error('Error fetching episode data:', error);
+            this.resultsTarget.innerHTML = `<p class="text-red-500">No characters found matching "${query}".</p>`;
+        }
+    }
+
     async fetchCharacters(characterUrls){
         try {
             const characterPromises = characterUrls.map((url) => fetch(url).then((res) => res.json()))
@@ -27,6 +44,26 @@ export default class extends Controller {
         }
     }
 
+    renderEpisodeResults(episodes) {
+        this.resultsTarget.innerHTML = episodes
+            .map(
+                (episode) => `
+                <div class="bg-gray-700 p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-200">${episode.name}</h3>
+                    <p class="text-gray-400"><strong>Air Date:</strong> ${episode.air_date || 'Unknown'}</p>
+                    <p class="text-gray-400"><strong>Episode:</strong> ${episode.episode || 'Unknown'}</p>
+                    <button 
+                        class="mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg"
+                        data-action="click->episode-details#showEpisodeDetails"
+                        data-id="${episode.id}">
+                        View Details
+                    </button>
+                </div>
+            `
+            )
+            .join("");
+    }
+    
     renderCharacters(characters){
         if(!Array.isArray(characters) || characters.length === 0){
             return `<p class="text-gray-400">No characters found for this episode.</p>`
@@ -59,7 +96,7 @@ export default class extends Controller {
                 <button 
                     class="mt-6 px-6 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg"
                     data-action="click->application#showEpisodes">
-                    Back to Episodes
+                    Back
                 </button>
             </div>
         `;
